@@ -111,38 +111,39 @@ export function FeedbackForm() {
                 <BuildingComplex className="w-4  h-4 text-primary-color" />
                 Torre y Número de departamento
               </FieldLabel>
-              <Input
-                id="habitacion"
-                name="habitacion"
-                inputMode="numeric"
-                placeholder="Ej. 123"
-                defaultValue={v.habitacion}
-                className="h-11"
-              />
-            </Field>
-            <Field data-invalid={!!err.torre}>
-              <RadioGroup
-                name="torre"
-                defaultValue={v.torre || "torre_1"}
-                className="flex gap-6"
-              >
-                <Field orientation="horizontal">
-                  <RadioGroupItem value="torre_1" id="torre-1" />
-                  <FieldLabel htmlFor="torre-1" className="font-normal">
-                    Torre 1
-                  </FieldLabel>
-                </Field>
 
-                <Field orientation="horizontal">
-                  <RadioGroupItem value="torre_2" id="torre-2" />
-                  <FieldLabel htmlFor="torre-2" className="font-normal">
-                    Torre 2
-                  </FieldLabel>
-                </Field>
-              </RadioGroup>
+              <Field data-invalid={!!err.torre}>
+                <RadioGroup
+                  name="torre"
+                  defaultValue={v.torre || "torre_1"}
+                  className="flex gap-6"
+                >
+                  <Field orientation="horizontal">
+                    <RadioGroupItem value="torre_1" id="torre-1" />
+                    <FieldLabel htmlFor="torre-1" className="font-normal">
+                      Torre 1
+                    </FieldLabel>
+                  </Field>
 
-              <FieldError>{err.torre?.[0]}</FieldError>
+                  <Field orientation="horizontal">
+                    <RadioGroupItem value="torre_2" id="torre-2" />
+                    <FieldLabel htmlFor="torre-2" className="font-normal">
+                      Torre 2
+                    </FieldLabel>
+                  </Field>
+                </RadioGroup>
+
+                <FieldError>{err.torre?.[0]}</FieldError>
+              </Field>
             </Field>
+            <Input
+              id="habitacion"
+              name="habitacion"
+              inputMode="numeric"
+              placeholder="Ej. 123"
+              defaultValue={v.habitacion}
+              className="h-11"
+            />
           </div>
 
           <Field data-invalid={!!err.comentarios}>
