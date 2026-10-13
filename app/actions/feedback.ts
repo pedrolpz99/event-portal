@@ -60,7 +60,7 @@ export async function sendFeedback(
   const torre = torres[d.torre];
 
   const { error } = await resend.emails.send({
-    from: "Comentarios Evento <onboarding@resend.dev>",
+    from: "Comentarios Evento <comentarios@feedback.safihotel.com>",
     to: process.env.FEEDBACK_EMAIL!,
     subject: `Nuevo comentario de evento – ${torre}`,
     html: `
