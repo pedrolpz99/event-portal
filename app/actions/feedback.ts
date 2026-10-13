@@ -5,10 +5,15 @@ import { z } from "zod";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const torres = {
+  torre_1: "Torre 1",
+  torre_2: "Torre 2",
+} as const;
+
 const schema = z.object({
   tipo: z.enum(["invitado", "inquilino"], { message: "Selecciona una opción" }),
-  habitacion: z.string().trim().max(10).optional(),
-  departamento: z.string().trim().max(10).optional(),
+  torre: z.enum(["torre_1", "torre_2"], { message: "Selecciona una torre" }),
+  habitacion: z.string().trim().max(10),
   comentarios: z
     .string()
     .trim()
@@ -32,8 +37,6 @@ const escapeHtml = (s = "") =>
       ]!,
   );
 
-const caritas = ["", "😞", "😕", "😐", "🙂", "😍"];
-
 export async function sendFeedback(
   _prev: FeedbackState,
   formData: FormData,
@@ -54,17 +57,18 @@ export async function sendFeedback(
   }
 
   const d = parsed.data;
+  const torre = torres[d.torre];
 
   const { error } = await resend.emails.send({
     from: "Comentarios Evento <onboarding@resend.dev>",
     to: process.env.FEEDBACK_EMAIL!,
-    subject: `Nuevo comentario de un evento`,
+    subject: `Nuevo comentario de evento – ${torre}`,
     html: `
       <div style="font-family:sans-serif;max-width:560px">
         <h2 style="margin:0 0 12px">Nuevo comentario de un ${escapeHtml(d.tipo)}</h2>
         <table style="border-collapse:collapse;margin-bottom:16px">
-          <tr><td style="padding:4px 12px 4px 0;color:#666">Habitación</td><td>${escapeHtml(d.habitacion) || "—"}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#666">Departamento</td><td>${escapeHtml(d.departamento) || "—"}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;color:#666">Torre</td><td>${torre}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;color:#666">Departamento</td><td>${escapeHtml(d.habitacion) || "—"}</td></tr>
         </table>
         <div style="background:#f5f5f5;border-radius:8px;padding:16px;white-space:pre-wrap">${escapeHtml(d.comentarios)}</div>
       </div>

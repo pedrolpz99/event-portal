@@ -1,36 +1,28 @@
 "use client";
-
+import Image from "next/image";
 import { useActionState } from "react";
-import { CheckCircle2, Loader2, Send } from "lucide-react";
+import {
+  CheckCircle2,
+  Loader2,
+  Send,
+  UsersRound,
+  BuildingComplex,
+  PencilLine,
+} from "lucide-react";
 
 import { sendFeedback, type FeedbackState } from "@/app/actions/feedback";
 import { Button } from "@/components/ui/button";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 
 const initialState: FeedbackState = { status: "idle" };
-
-const ratings = [
-  { value: 1, emoji: "😞", label: "Mala" },
-  { value: 2, emoji: "😕", label: "Regular" },
-  { value: 3, emoji: "😐", label: "Normal" },
-  { value: 4, emoji: "🙂", label: "Buena" },
-  { value: 5, emoji: "😍", label: "Excelente" },
-];
 
 export function FeedbackForm() {
   const [state, formAction, isPending] = useActionState(
@@ -85,49 +77,40 @@ export function FeedbackForm() {
         />
 
         <FieldGroup>
-          {/* Calificación */}
-          {/* <Field data-invalid={!!err.calificacion}>
-            <FieldLabel>Califica tu experiencia</FieldLabel>
-            <div role="radiogroup" className="grid grid-cols-5 gap-2">
-              {ratings.map((r) => (
-                <label key={r.value} className="cursor-pointer">
-                  <input
-                    type="radio"
-                    name="calificacion"
-                    value={r.value}
-                    defaultChecked={v.calificacion === String(r.value)}
-                    className="peer sr-only"
-                  />
-                  <span className="flex flex-col items-center gap-1 rounded-xl border-2 border-transparent bg-muted/60 py-3 transition-all hover:bg-muted peer-checked:scale-105 peer-checked:border-primary peer-checked:bg-primary/10 peer-focus-visible:ring-2 peer-focus-visible:ring-ring">
-                    <span className="text-2xl sm:text-3xl">{r.emoji}</span>
-                    <span className="text-[11px] text-muted-foreground">
-                      {r.label}
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </div>
-            <FieldError>{err.calificacion?.[0]}</FieldError>
-          </Field> */}
-
           {/* Tipo */}
           <Field data-invalid={!!err.tipo}>
-            <FieldLabel htmlFor="tipo">Soy</FieldLabel>
-            <Select name="tipo" defaultValue={v.tipo || "invitado"}>
-              <SelectTrigger id="tipo" className="h-11 w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="invitado">Invitado</SelectItem>
-                <SelectItem value="inquilino">Inquilino</SelectItem>
-              </SelectContent>
-            </Select>
+            <FieldLabel>
+              <UsersRound className="w-4 h-4 text-primary-color" />
+              Soy
+            </FieldLabel>
+
+            <RadioGroup
+              name="tipo"
+              defaultValue={v.tipo || "inquilino"}
+              className="flex gap-6"
+            >
+              <Field orientation="horizontal">
+                <RadioGroupItem value="inquilino" id="tipo-inquilino" />
+                <FieldLabel htmlFor="tipo-inquilino" className="font-normal">
+                  Inquilino
+                </FieldLabel>
+              </Field>
+              <Field orientation="horizontal">
+                <RadioGroupItem value="invitado" id="tipo-invitado" />
+                <FieldLabel htmlFor="tipo-invitado" className="font-normal">
+                  Invitado
+                </FieldLabel>
+              </Field>
+            </RadioGroup>
+
             <FieldError>{err.tipo?.[0]}</FieldError>
           </Field>
-
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4">
             <Field>
-              <FieldLabel htmlFor="habitacion">Número de habitación</FieldLabel>
+              <FieldLabel htmlFor="habitacion">
+                <BuildingComplex className="w-4  h-4 text-primary-color" />
+                Torre y Número de departamento
+              </FieldLabel>
               <Input
                 id="habitacion"
                 name="habitacion"
@@ -137,25 +120,42 @@ export function FeedbackForm() {
                 className="h-11"
               />
             </Field>
-            <Field>
-              <FieldLabel htmlFor="departamento">Departamento</FieldLabel>
-              <Input
-                id="departamento"
-                name="departamento"
-                placeholder="Ej. B-4"
-                defaultValue={v.departamento}
-                className="h-11"
-              />
+            <Field data-invalid={!!err.torre}>
+              <RadioGroup
+                name="torre"
+                defaultValue={v.torre || "torre_1"}
+                className="flex gap-6"
+              >
+                <Field orientation="horizontal">
+                  <RadioGroupItem value="torre_1" id="torre-1" />
+                  <FieldLabel htmlFor="torre-1" className="font-normal">
+                    Torre 1
+                  </FieldLabel>
+                </Field>
+
+                <Field orientation="horizontal">
+                  <RadioGroupItem value="torre_2" id="torre-2" />
+                  <FieldLabel htmlFor="torre-2" className="font-normal">
+                    Torre 2
+                  </FieldLabel>
+                </Field>
+              </RadioGroup>
+
+              <FieldError>{err.torre?.[0]}</FieldError>
             </Field>
           </div>
 
           <Field data-invalid={!!err.comentarios}>
-            <FieldLabel htmlFor="comentarios">Tus comentarios</FieldLabel>
+            <FieldLabel htmlFor="comentarios">
+              {" "}
+              <PencilLine className="w-4  h-4 text-primary-color" />
+              Tus comentarios
+            </FieldLabel>
             <Textarea
               id="comentarios"
               name="comentarios"
               rows={5}
-              placeholder="¿Qué te gustó? ¿Qué podríamos mejorar?"
+              placeholder="Escribe aquí tus observaciones y sugerencias sobre el evento"
               defaultValue={v.comentarios}
               className="min-h-32 resize-none"
             />
@@ -194,6 +194,16 @@ function Card({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-[#202124] from-primary/5 to-background px-4 py-8 sm:py-16">
       <div className="mx-auto w-full max-w-lg rounded-2xl border bg-card p-6 shadow-sm sm:p-10">
+        <div className="d-flex justify-items-center mb-2">
+          <Image
+            className="dark:invert"
+            src="/metropolitan_logo_black.png"
+            alt="Next.js logo"
+            width={100}
+            height={20}
+            priority
+          />
+        </div>
         {children}
       </div>
     </div>
