@@ -194,11 +194,11 @@ function Card({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-dvh bg-[#202124] from-primary/5 to-background px-4 py-8 sm:py-16">
       <div className="mx-auto w-full max-w-lg rounded-2xl border bg-card p-6 shadow-sm sm:p-10">
-        <div className="d-flex justify-items-center mb-2">
+        <div className="mb-2 flex justify-center">
           <Image
             className="dark:invert"
             src="/metropolitan_logo_black.png"
-            alt="Next.js logo"
+            alt="Metropolitan logo"
             width={100}
             height={20}
             priority
