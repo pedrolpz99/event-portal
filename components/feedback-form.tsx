@@ -140,7 +140,7 @@ export function FeedbackForm() {
               id="habitacion"
               name="habitacion"
               inputMode="numeric"
-              placeholder="Ej. 123"
+              placeholder="N° departamento"
               defaultValue={v.habitacion}
               className="h-11"
             />
