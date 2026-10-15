@@ -65,12 +65,12 @@ export async function sendFeedback(
   const torre = torres[d.torre];
 
   const { error } = await resend.emails.send({
-    from: `Comentarios ${torre} <onboarding@resend.dev>`,
+    from: `Sugerencia ${torre} <onboarding@resend.dev>`,
     to: process.env.FEEDBACK_EMAIL!,
-    subject: `Nuevo comentario de – ${torre}`,
+    subject: `Nueva sugerencia de – ${torre}`,
     html: `
       <div style="font-family:sans-serif;max-width:560px">
-        <h2 style="margin:0 0 12px">Nuevo comentario de un ${escapeHtml(d.tipo)}</h2>
+        <h2 style="margin:0 0 12px">Nuevo sugerencia de un ${escapeHtml(d.tipo)}</h2>
         <table style="border-collapse:collapse;margin-bottom:16px">
           <tr><td style="padding:4px 12px 4px 0;color:#666">Torre</td><td>${torre}</td></tr>
           <tr><td style="padding:4px 12px 4px 0;color:#666">Departamento</td><td>${escapeHtml(d.habitacion)}</td></tr>
