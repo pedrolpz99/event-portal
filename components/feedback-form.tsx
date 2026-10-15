@@ -136,14 +136,27 @@ export function FeedbackForm() {
                 <FieldError>{err.torre?.[0]}</FieldError>
               </Field>
             </Field>
-            <Input
-              id="habitacion"
-              name="habitacion"
-              inputMode="numeric"
-              placeholder="N° departamento"
-              defaultValue={v.habitacion}
-              className="h-11"
-            />
+            <Field data-invalid={!!err.habitacion}>
+              <Input
+                id="habitacion"
+                name="habitacion"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={10}
+                required
+                aria-invalid={!!err.habitacion}
+                placeholder="N° departamento"
+                defaultValue={v.habitacion}
+                onChange={(e) => {
+                  e.currentTarget.value = e.currentTarget.value.replace(
+                    /\D/g,
+                    "",
+                  );
+                }}
+                className="h-11"
+              />
+              <FieldError>{err.habitacion?.[0]}</FieldError>
+            </Field>
           </div>
 
           <Field data-invalid={!!err.comentarios}>

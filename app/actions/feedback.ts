@@ -13,7 +13,12 @@ const torres = {
 const schema = z.object({
   tipo: z.enum(["invitado", "inquilino"], { message: "Selecciona una opción" }),
   torre: z.enum(["torre_1", "torre_2"], { message: "Selecciona una torre" }),
-  habitacion: z.string().trim().max(10),
+  habitacion: z
+    .string()
+    .trim()
+    .min(1, "Ingresa tu número de departamento")
+    .max(10, "Máximo 10 dígitos")
+    .regex(/^\d+$/, "Solo se permiten números"),
   comentarios: z
     .string()
     .trim()
@@ -60,15 +65,15 @@ export async function sendFeedback(
   const torre = torres[d.torre];
 
   const { error } = await resend.emails.send({
-    from: "Comentarios Evento <onboarding@resend.dev>",
+    from: `Comentarios ${torre} <onboarding@resend.dev>`,
     to: process.env.FEEDBACK_EMAIL!,
-    subject: `Nuevo comentario de evento – ${torre}`,
+    subject: `Nuevo comentario de – ${torre}`,
     html: `
       <div style="font-family:sans-serif;max-width:560px">
         <h2 style="margin:0 0 12px">Nuevo comentario de un ${escapeHtml(d.tipo)}</h2>
         <table style="border-collapse:collapse;margin-bottom:16px">
           <tr><td style="padding:4px 12px 4px 0;color:#666">Torre</td><td>${torre}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#666">Departamento</td><td>${escapeHtml(d.habitacion) || "—"}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0;color:#666">Departamento</td><td>${escapeHtml(d.habitacion)}</td></tr>
         </table>
         <div style="background:#f5f5f5;border-radius:8px;padding:16px;white-space:pre-wrap">${escapeHtml(d.comentarios)}</div>
       </div>
