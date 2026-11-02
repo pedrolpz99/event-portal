@@ -67,16 +67,72 @@ export async function sendFeedback(
   const { error } = await resend.emails.send({
     from: `Sugerencia ${torre} <noreply@feedback.safihotel.com>`,
     to: process.env.FEEDBACK_EMAIL!,
-    subject: `Nueva sugerencia de – ${torre}`,
+    subject: `Sugerencia – ${torre}`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px">
-        <h2 style="margin:0 0 12px">Nueva sugerencia de un ${escapeHtml(d.tipo)}</h2>
-        <table style="border-collapse:collapse;margin-bottom:16px">
-          <tr><td style="padding:4px 12px 4px 0;color:#666">Torre</td><td>${torre}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0;color:#666">Departamento</td><td>${escapeHtml(d.habitacion)}</td></tr>
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+    Torre ${torre}, departamento ${escapeHtml(d.habitacion)}
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f3f4f6" style="background-color:#f3f4f6;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="max-width:560px;background-color:#ffffff;border:1px solid #e5e7eb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+
+          <!-- Encabezado -->
+          <tr>
+            <td style="padding:32px 32px 24px;">
+              <p style="margin:0 0 8px;font-size:12px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:#1e3a5f;">
+                Buzón de sugerencias
+              </p>
+              <h1 style="margin:0;font-size:22px;line-height:30px;font-weight:600;color:#111827;">
+                Sugerencia ${escapeHtml(d.tipo)}
+              </h1>
+            </td>
+          </tr>
+
+          <!-- Datos -->
+          <tr>
+            <td style="padding:0 32px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+                <tr>
+                  <td width="50%" valign="top" style="padding:16px 12px 16px 0;">
+                    <p style="margin:0 0 4px;font-size:12px;line-height:16px;color:#6b7280;">Torre</p>
+                    <p style="margin:0;font-size:16px;line-height:22px;font-weight:600;color:#111827;">${torre}</p>
+                  </td>
+                  <td width="50%" valign="top" style="padding:16px 0 16px 12px;">
+                    <p style="margin:0 0 4px;font-size:12px;line-height:16px;color:#6b7280;">Departamento</p>
+                    <p style="margin:0;font-size:16px;line-height:22px;font-weight:600;color:#111827;">${escapeHtml(d.habitacion)}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Comentarios -->
+          <tr>
+            <td style="padding:24px 32px 32px;">
+              <p style="margin:0 0 8px;font-size:12px;line-height:16px;color:#6b7280;">Comentarios</p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td bgcolor="#f9fafb" style="padding:16px;background-color:#f9fafb;border-left:3px solid #1e3a5f;font-size:15px;line-height:24px;color:#374151;word-break:break-word;">
+                    ${escapeHtml(d.comentarios).replace(/\r?\n/g, "<br>")}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Pie -->
+          <tr>
+            <td bgcolor="#f9fafb" style="padding:16px 32px;background-color:#f9fafb;border-top:1px solid #e5e7eb;border-radius:0 0 8px 8px;font-size:12px;line-height:18px;color:#6b7280;">
+              Este correo se generó automáticamente a partir del formulario de sugerencias.
+            </td>
+          </tr>
+
         </table>
-        <div style="background:#f5f5f5;border-radius:8px;padding:16px;white-space:pre-wrap">${escapeHtml(d.comentarios)}</div>
-      </div>
+      </td>
+    </tr>
+  </table>
     `,
   });
 
